@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="305" key="DIALOG_WIDTH"/>
+		<item value="290" key="DIALOG_Y_ORIGIN"/>
+		<item value="439" key="DIALOG_HEIGHT"/>
+		<item value="1429" key="DIALOG_X_ORIGIN"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="true" key="wrap"/>
+		<item value="false" key="isRegEx"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="false" key="wholeword"/>
+		<item value="USART0" key="selection"/>
+		<list key="findhistory">
+			<item value="USART1"/>
+			<item value="I2C0"/>
+			<item value="C:\SiliconLabs\SimplicityStudio\v2\developer\sdks\efm32\v2/kits/common/drivers/emstatus.h:27:64: fatal error: em_types.h: No such file or directory"/>
+			<item value="main"/>
+			<item value="uint32_t"/>
+			<item value="int16_t"/>
+			<item value="int64_t"/>
+			<item value="extern"/>
+		</list>
+		<list key="replacehistory">
+			<item value="USART0"/>
+			<item value="I2C1"/>
+			<item value="int"/>
+			<item value="short"/>
+			<item value="double"/>
+			<item value=" "/>
+			<item value="I2C_RegisterGet(I2C0, "/>
+			<item value="I2C_RegisterSet(I2C0, "/>
+		</list>
+	</section>
+</section>

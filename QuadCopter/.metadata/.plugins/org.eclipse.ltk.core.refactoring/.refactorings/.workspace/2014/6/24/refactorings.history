@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;STK3700_inttemp&apos;" deleteContents="true" description="Delete resource &apos;STK3700_inttemp&apos;" element1="/STK3700_inttemp" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1402778245264"/>
+</session>

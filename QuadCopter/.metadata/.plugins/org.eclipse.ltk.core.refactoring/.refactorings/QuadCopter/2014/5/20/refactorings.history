@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;QuadCopter/src/empty_project.c&apos; to &apos;QuadCopter.c&apos;" description="Rename resource &apos;empty_project.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/empty_project.c" name="QuadCopter.c" stamp="1400045968142" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;QuadCopter/src/blink.c&apos; to &apos;QuadCopter.c&apos;" description="Rename resource &apos;blink.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/blink.c" name="QuadCopter.c" stamp="1400055324775" updateReferences="true"/>
+</session>
