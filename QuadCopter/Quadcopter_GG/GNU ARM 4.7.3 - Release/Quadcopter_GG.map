@@ -1,9 +1,11 @@
 Archive member included because of file (symbol)
 
 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_addsubdf3.o)
-                              ./src/MPU6050.o (__aeabi_dadd)
+                              ./src/PID.o (__aeabi_dsub)
 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_muldivdf3.o)
                               ./src/MPU6050.o (__aeabi_dmul)
+c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_cmpdf2.o)
+                              ./src/PID.o (__aeabi_dcmplt)
 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_truncdfsf2.o)
                               ./src/MPU6050.o (__aeabi_d2f)
 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_addsubsf3.o)
@@ -99,6 +101,25 @@ Discarded input sections
  .bss           0x00000000        0x0 ./src/MPU6050.o
  .text.Get_Accel_Angles
                 0x00000000      0x128 ./src/MPU6050.o
+ .text          0x00000000        0x0 ./src/PID.o
+ .data          0x00000000        0x0 ./src/PID.o
+ .bss           0x00000000        0x0 ./src/PID.o
+ .text.pid_zeroize
+                0x00000000       0x10 ./src/PID.o
+ .text.pid_update
+                0x00000000       0xdc ./src/PID.o
+ .debug_info    0x00000000      0x14e ./src/PID.o
+ .debug_abbrev  0x00000000       0xce ./src/PID.o
+ .debug_loc     0x00000000       0xf0 ./src/PID.o
+ .debug_aranges
+                0x00000000       0x28 ./src/PID.o
+ .debug_ranges  0x00000000       0x18 ./src/PID.o
+ .debug_line    0x00000000       0x77 ./src/PID.o
+ .debug_str     0x00000000      0x13c ./src/PID.o
+ .comment       0x00000000       0x71 ./src/PID.o
+ .ARM.attributes
+                0x00000000       0x33 ./src/PID.o
+ .debug_frame   0x00000000       0x48 ./src/PID.o
  .text          0x00000000        0x0 ./src/UART.o
  .data          0x00000000        0x0 ./src/UART.o
  .bss           0x00000000        0x0 ./src/UART.o
@@ -450,6 +471,11 @@ Discarded input sections
  .bss           0x00000000        0x0 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_addsubdf3.o)
  .data          0x00000000        0x0 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_muldivdf3.o)
  .bss           0x00000000        0x0 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_muldivdf3.o)
+ .text          0x00000000      0x110 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_cmpdf2.o)
+ .data          0x00000000        0x0 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_cmpdf2.o)
+ .bss           0x00000000        0x0 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_cmpdf2.o)
+ .ARM.attributes
+                0x00000000       0x1d c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_cmpdf2.o)
  .data          0x00000000        0x0 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_truncdfsf2.o)
  .bss           0x00000000        0x0 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_truncdfsf2.o)
  .data          0x00000000        0x0 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv7-m\libgcc.a(_arm_addsubsf3.o)
@@ -581,6 +607,7 @@ LOAD c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/
 LOAD c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/../../../../arm-none-eabi/lib/armv7-m/crt0.o
 LOAD ./src/I2C.o
 LOAD ./src/MPU6050.o
+LOAD ./src/PID.o
 LOAD ./src/UART.o
 LOAD ./src/XBEE.o
 LOAD ./src/main.o

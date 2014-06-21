@@ -286,14 +286,14 @@ Discarded input sections
                 0x00000000       0x38 ./emlib/em_system.o
  .rodata.str1.4
                 0x00000000       0x18 ./emlib/em_system.o
- .debug_info    0x00000000      0x28c ./emlib/em_system.o
+ .debug_info    0x00000000      0x29a ./emlib/em_system.o
  .debug_abbrev  0x00000000      0x10d ./emlib/em_system.o
  .debug_loc     0x00000000      0x110 ./emlib/em_system.o
  .debug_aranges
                 0x00000000       0x28 ./emlib/em_system.o
  .debug_ranges  0x00000000       0x18 ./emlib/em_system.o
- .debug_line    0x00000000      0x20d ./emlib/em_system.o
- .debug_str     0x00000000      0x233 ./emlib/em_system.o
+ .debug_line    0x00000000      0x232 ./emlib/em_system.o
+ .debug_str     0x00000000      0x23a ./emlib/em_system.o
  .comment       0x00000000       0x71 ./emlib/em_system.o
  .ARM.attributes
                 0x00000000       0x32 ./emlib/em_system.o
@@ -411,7 +411,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x40 ./BSP/bsp_bcc.o
  .debug_ranges  0x00000000      0x170 ./BSP/bsp_bcc.o
- .debug_line    0x00000000      0x36c ./BSP/bsp_bcc.o
+ .debug_line    0x00000000      0x391 ./BSP/bsp_bcc.o
  .debug_str     0x00000000      0x82d ./BSP/bsp_bcc.o
  .comment       0x00000000       0x71 ./BSP/bsp_bcc.o
  .ARM.attributes
@@ -471,7 +471,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x50 ./BSP/bsp_stk_leds.o
  .debug_ranges  0x00000000       0xa0 ./BSP/bsp_stk_leds.o
- .debug_line    0x00000000      0x2da ./BSP/bsp_stk_leds.o
+ .debug_line    0x00000000      0x2ff ./BSP/bsp_stk_leds.o
  .debug_str     0x00000000      0x61b ./BSP/bsp_stk_leds.o
  .comment       0x00000000       0x71 ./BSP/bsp_stk_leds.o
  .ARM.attributes
@@ -1230,7 +1230,7 @@ LOAD c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/
                 0x00006098       0x1c ./Drivers/retargetio.o
  .rodata.escapeSequences.4888
                 0x000060b4       0x18 ./Drivers/textdisplay.o
- .rodata.fontBits_6x8
+ .rodata.chars_6x8_bits
                 0x000060cc      0x320 ./Drivers/textdisplay.o
  .rodata        0x000063ec        0x4 ./Drivers/udelay.o
  .rodata        0x000063f0       0x40 c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/bin/../lib/gcc/arm-none-eabi/4.7.3/armv6-m\libgcc.a(divdf3.o)
@@ -1784,29 +1784,29 @@ OUTPUT(MPU6050.axf elf32-littlearm)
  .debug_ranges  0x00000ca0       0xa8 ./Drivers/udelay.o
  .debug_ranges  0x00000d48      0x130 ./CMSIS/efm32zg/system_efm32zg.o
 
-.debug_line     0x00000000     0x4434
- .debug_line    0x00000000      0x21f ./src/I2C.o
- .debug_line    0x0000021f      0x3ea ./src/MPU6050.o
- .debug_line    0x00000609      0x367 ./src/main.o
- .debug_line    0x00000970       0x44 ./emlib/em_assert.o
- .debug_line    0x000009b4      0x875 ./emlib/em_cmu.o
- .debug_line    0x00001229      0x32a ./emlib/em_emu.o
- .debug_line    0x00001553      0x294 ./emlib/em_gpio.o
- .debug_line    0x000017e7      0x439 ./emlib/em_i2c.o
- .debug_line    0x00001c20       0xce ./emlib/em_int.o
- .debug_line    0x00001cee      0x2a4 ./emlib/em_rtc.o
- .debug_line    0x00001f92      0x64a ./emlib/em_usart.o
- .debug_line    0x000025dc      0x290 ./Drivers/display.o
- .debug_line    0x0000286c      0x377 ./Drivers/displayls013b7dh03.o
- .debug_line    0x00002be3      0x534 ./Drivers/displaypalemlib.o
- .debug_line    0x00003117      0x377 ./Drivers/retargetio.o
- .debug_line    0x0000348e      0x341 ./Drivers/retargettextdisplay.o
- .debug_line    0x000037cf      0x5e4 ./Drivers/textdisplay.o
- .debug_line    0x00003db3      0x368 ./Drivers/udelay.o
- .debug_line    0x0000411b       0x85 ./CMSIS/efm32zg/startup_gcc_efm32zg.o
- .debug_line    0x000041a0      0x294 ./CMSIS/efm32zg/system_efm32zg.o
+.debug_line     0x00000000     0x45a4
+ .debug_line    0x00000000      0x244 ./src/I2C.o
+ .debug_line    0x00000244      0x40f ./src/MPU6050.o
+ .debug_line    0x00000653      0x38c ./src/main.o
+ .debug_line    0x000009df       0x44 ./emlib/em_assert.o
+ .debug_line    0x00000a23      0x89a ./emlib/em_cmu.o
+ .debug_line    0x000012bd      0x34f ./emlib/em_emu.o
+ .debug_line    0x0000160c      0x2b9 ./emlib/em_gpio.o
+ .debug_line    0x000018c5      0x45e ./emlib/em_i2c.o
+ .debug_line    0x00001d23       0xce ./emlib/em_int.o
+ .debug_line    0x00001df1      0x2c9 ./emlib/em_rtc.o
+ .debug_line    0x000020ba      0x66f ./emlib/em_usart.o
+ .debug_line    0x00002729      0x290 ./Drivers/display.o
+ .debug_line    0x000029b9      0x377 ./Drivers/displayls013b7dh03.o
+ .debug_line    0x00002d30      0x559 ./Drivers/displaypalemlib.o
+ .debug_line    0x00003289      0x377 ./Drivers/retargetio.o
+ .debug_line    0x00003600      0x341 ./Drivers/retargettextdisplay.o
+ .debug_line    0x00003941      0x598 ./Drivers/textdisplay.o
+ .debug_line    0x00003ed9      0x38d ./Drivers/udelay.o
+ .debug_line    0x00004266       0x85 ./CMSIS/efm32zg/startup_gcc_efm32zg.o
+ .debug_line    0x000042eb      0x2b9 ./CMSIS/efm32zg/system_efm32zg.o
 
-.debug_str      0x00000000     0x2fba
+.debug_str      0x00000000     0x2fbc
  .debug_str     0x00000000      0x65a ./src/I2C.o
                                 0x6b8 (size before relaxing)
  .debug_str     0x0000065a      0x25f ./src/MPU6050.o
@@ -1839,11 +1839,11 @@ OUTPUT(MPU6050.axf elf32-littlearm)
                                 0x6d2 (size before relaxing)
  .debug_str     0x00002a4e       0xee ./Drivers/retargettextdisplay.o
                                 0x7e5 (size before relaxing)
- .debug_str     0x00002b3c      0x2c7 ./Drivers/textdisplay.o
-                                0x670 (size before relaxing)
- .debug_str     0x00002e03      0x121 ./Drivers/udelay.o
+ .debug_str     0x00002b3c      0x2c9 ./Drivers/textdisplay.o
+                                0x672 (size before relaxing)
+ .debug_str     0x00002e05      0x121 ./Drivers/udelay.o
                                 0x86a (size before relaxing)
- .debug_str     0x00002f24       0x96 ./CMSIS/efm32zg/system_efm32zg.o
+ .debug_str     0x00002f26       0x96 ./CMSIS/efm32zg/system_efm32zg.o
                                 0x34f (size before relaxing)
 
 .debug_frame    0x00000000     0x17f8

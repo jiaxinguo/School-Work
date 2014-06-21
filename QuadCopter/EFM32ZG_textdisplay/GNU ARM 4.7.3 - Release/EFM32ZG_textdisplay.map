@@ -237,14 +237,14 @@ Discarded input sections
                 0x00000000       0x38 ./emlib/em_system.o
  .rodata.str1.4
                 0x00000000       0x18 ./emlib/em_system.o
- .debug_info    0x00000000      0x28c ./emlib/em_system.o
+ .debug_info    0x00000000      0x29a ./emlib/em_system.o
  .debug_abbrev  0x00000000      0x10d ./emlib/em_system.o
  .debug_loc     0x00000000      0x110 ./emlib/em_system.o
  .debug_aranges
                 0x00000000       0x28 ./emlib/em_system.o
  .debug_ranges  0x00000000       0x18 ./emlib/em_system.o
- .debug_line    0x00000000      0x20d ./emlib/em_system.o
- .debug_str     0x00000000      0x23f ./emlib/em_system.o
+ .debug_line    0x00000000      0x232 ./emlib/em_system.o
+ .debug_str     0x00000000      0x246 ./emlib/em_system.o
  .comment       0x00000000       0x71 ./emlib/em_system.o
  .ARM.attributes
                 0x00000000       0x32 ./emlib/em_system.o
@@ -1075,7 +1075,7 @@ LOAD c:/siliconlabs/simplicitystudio/v2/developer/toolchains/gnu_arm/4.7_2013q1/
                 0x0000350c       0x1c ./Drivers/retargetio.o
  .rodata.escapeSequences.4888
                 0x00003528       0x18 ./Drivers/textdisplay.o
- .rodata.fontBits_6x8
+ .rodata.chars_6x8_bits
                 0x00003540      0x320 ./Drivers/textdisplay.o
  .rodata        0x00003860        0x4 ./Drivers/udelay.o
  .rodata        0x00003864       0x10 ./BSP/bsp_bcc.o
@@ -1533,30 +1533,30 @@ OUTPUT(EFM32ZG_textdisplay.axf elf32-littlearm)
  .debug_ranges  0x00000fa0       0x38 ./BSP/bsp_stk.o
  .debug_ranges  0x00000fd8       0xa0 ./BSP/bsp_stk_leds.o
 
-.debug_line     0x00000000     0x4639
- .debug_line    0x00000000      0x3bb ./src/main.o
- .debug_line    0x000003bb       0x44 ./emlib/em_assert.o
- .debug_line    0x000003ff      0x875 ./emlib/em_cmu.o
- .debug_line    0x00000c74      0x32a ./emlib/em_emu.o
- .debug_line    0x00000f9e      0x294 ./emlib/em_gpio.o
- .debug_line    0x00001232       0xce ./emlib/em_int.o
- .debug_line    0x00001300      0x406 ./emlib/em_leuart.o
- .debug_line    0x00001706      0x2a4 ./emlib/em_rtc.o
- .debug_line    0x000019aa      0x64a ./emlib/em_usart.o
- .debug_line    0x00001ff4      0x290 ./Drivers/display.o
- .debug_line    0x00002284      0x377 ./Drivers/displayls013b7dh03.o
- .debug_line    0x000025fb      0x534 ./Drivers/displaypalemlib.o
- .debug_line    0x00002b2f      0x377 ./Drivers/retargetio.o
- .debug_line    0x00002ea6      0x341 ./Drivers/retargettextdisplay.o
- .debug_line    0x000031e7      0x5e4 ./Drivers/textdisplay.o
- .debug_line    0x000037cb      0x368 ./Drivers/udelay.o
- .debug_line    0x00003b33       0x85 ./CMSIS/efm32zg/startup_gcc_efm32zg.o
- .debug_line    0x00003bb8      0x294 ./CMSIS/efm32zg/system_efm32zg.o
- .debug_line    0x00003e4c      0x36c ./BSP/bsp_bcc.o
- .debug_line    0x000041b8      0x1a7 ./BSP/bsp_stk.o
- .debug_line    0x0000435f      0x2da ./BSP/bsp_stk_leds.o
+.debug_line     0x00000000     0x47a9
+ .debug_line    0x00000000      0x3e0 ./src/main.o
+ .debug_line    0x000003e0       0x44 ./emlib/em_assert.o
+ .debug_line    0x00000424      0x89a ./emlib/em_cmu.o
+ .debug_line    0x00000cbe      0x34f ./emlib/em_emu.o
+ .debug_line    0x0000100d      0x2b9 ./emlib/em_gpio.o
+ .debug_line    0x000012c6       0xce ./emlib/em_int.o
+ .debug_line    0x00001394      0x42b ./emlib/em_leuart.o
+ .debug_line    0x000017bf      0x2c9 ./emlib/em_rtc.o
+ .debug_line    0x00001a88      0x66f ./emlib/em_usart.o
+ .debug_line    0x000020f7      0x290 ./Drivers/display.o
+ .debug_line    0x00002387      0x377 ./Drivers/displayls013b7dh03.o
+ .debug_line    0x000026fe      0x559 ./Drivers/displaypalemlib.o
+ .debug_line    0x00002c57      0x377 ./Drivers/retargetio.o
+ .debug_line    0x00002fce      0x341 ./Drivers/retargettextdisplay.o
+ .debug_line    0x0000330f      0x598 ./Drivers/textdisplay.o
+ .debug_line    0x000038a7      0x38d ./Drivers/udelay.o
+ .debug_line    0x00003c34       0x85 ./CMSIS/efm32zg/startup_gcc_efm32zg.o
+ .debug_line    0x00003cb9      0x2b9 ./CMSIS/efm32zg/system_efm32zg.o
+ .debug_line    0x00003f72      0x391 ./BSP/bsp_bcc.o
+ .debug_line    0x00004303      0x1a7 ./BSP/bsp_stk.o
+ .debug_line    0x000044aa      0x2ff ./BSP/bsp_stk_leds.o
 
-.debug_str      0x00000000     0x2d9b
+.debug_str      0x00000000     0x2d9d
  .debug_str     0x00000000      0x5d6 ./src/main.o
                                 0x626 (size before relaxing)
  .debug_str     0x000005d6       0x24 ./emlib/em_assert.o
@@ -1585,17 +1585,17 @@ OUTPUT(EFM32ZG_textdisplay.axf elf32-littlearm)
                                 0x6de (size before relaxing)
  .debug_str     0x0000267a       0xee ./Drivers/retargettextdisplay.o
                                 0x7f1 (size before relaxing)
- .debug_str     0x00002768      0x2c7 ./Drivers/textdisplay.o
-                                0x67c (size before relaxing)
- .debug_str     0x00002a2f      0x121 ./Drivers/udelay.o
+ .debug_str     0x00002768      0x2c9 ./Drivers/textdisplay.o
+                                0x67e (size before relaxing)
+ .debug_str     0x00002a31      0x121 ./Drivers/udelay.o
                                 0x876 (size before relaxing)
- .debug_str     0x00002b50       0x96 ./CMSIS/efm32zg/system_efm32zg.o
+ .debug_str     0x00002b52       0x96 ./CMSIS/efm32zg/system_efm32zg.o
                                 0x35b (size before relaxing)
- .debug_str     0x00002be6       0xce ./BSP/bsp_bcc.o
+ .debug_str     0x00002be8       0xce ./BSP/bsp_bcc.o
                                 0x839 (size before relaxing)
- .debug_str     0x00002cb4       0x67 ./BSP/bsp_stk.o
+ .debug_str     0x00002cb6       0x67 ./BSP/bsp_stk.o
                                 0x243 (size before relaxing)
- .debug_str     0x00002d1b       0x80 ./BSP/bsp_stk_leds.o
+ .debug_str     0x00002d1d       0x80 ./BSP/bsp_stk_leds.o
                                 0x627 (size before relaxing)
 
 .debug_frame    0x00000000     0x1828

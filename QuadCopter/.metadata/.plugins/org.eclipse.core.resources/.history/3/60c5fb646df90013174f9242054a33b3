@@ -1,0 +1,377 @@
+/*****************************************************************************
+ * @file
+ * @brief TIMER Pulse Width Modulation Demo Application
+ * @author Energy Micro AS
+ * @version 1.08
+ ******************************************************************************
+ * @section License
+ * <b>(C) Copyright 2013 Energy Micro AS, http://www.energymicro.com</b>
+ *******************************************************************************
+ *
+ * Permission is granted to anyone to use this software for any purpose,
+ * including commercial applications, and to alter it and redistribute it
+ * freely, subject to the following restrictions:
+ *
+ * 1. The origin of this software must not be misrepresented; you must not
+ *    claim that you wrote the original software.
+ * 2. Altered source versions must be plainly marked as such, and must not be
+ *    misrepresented as being the original software.
+ * 3. This notice may not be removed or altered from any source distribution.
+ * 4. The source and compiled code may only be used on Energy Micro "EFM32"
+ *    microcontrollers and "EFR4" radios.
+ *
+ * DISCLAIMER OF WARRANTY/LIMITATION OF REMEDIES: Energy Micro AS has no
+ * obligation to support this Software. Energy Micro AS is providing the
+ * Software "AS IS", with no express or implied warranties of any kind,
+ * including, but not limited to, any implied warranties of merchantability
+ * or fitness for any particular purpose or warranties against infringement
+ * of any proprietary rights of a third party.
+ *
+ * Energy Micro AS will not be liable for any consequential, incidental, or
+ * special damages, or any other relief, or for any claim by any third party,
+ * arising from your use of this Software.
+ *
+ *****************************************************************************/
+#include "em_device.h"
+#include "em_cmu.h"
+#include "em_emu.h"
+#include "em_gpio.h"
+#include "em_prs.h"
+#include "em_system.h"
+#include "em_chip.h"
+#include "em_timer.h"
+#include <stdio.h>
+#include "XBEE.h"
+#include "UART.h"
+#include "declarations.h"
+#include "segmentlcd.h"
+#include "bsp_trace.h"
+#include "MPU6050.h"
+#include "PID.h"
+
+/* Define PWM frequency value */
+#define PWM_FREQ 400
+
+volatile bool pb0Pressed, pb1Pressed;
+
+int currentSpeed = 14000;
+/**************************************************************************//**
+ * @brief Quadcopter Defines
+ *****************************************************************************/
+#define DELTASPEED 50
+#define MAXSPEED 28000
+/**************************************************************************//**
+ * @brief GPIO Interrupt handler (PC8)
+ *****************************************************************************/
+void GPIO_EVEN_IRQHandler(void)
+{
+  /* Acknowledge interrupt */
+  GPIO_IntClear(1 << 10);
+  pb1Pressed = true;
+}
+
+/**************************************************************************//**
+ * @brief GPIO Interrupt handler (PC9)
+ *****************************************************************************/
+void GPIO_ODD_IRQHandler(void)
+{
+  /* Acknowledge interrupt */
+  GPIO_IntClear(1 << 9);
+  pb0Pressed = true;
+}
+
+/**************************************************************************//**
+ * Delay using SysTick
+ *****************************************************************************/
+volatile uint32_t msTicks; /* counts 1ms timeTicks */
+
+static void Delay(uint32_t dlyTicks)
+{
+  uint32_t curTicks;
+
+  curTicks = msTicks;
+  while ((msTicks - curTicks) < dlyTicks) ;
+}
+
+/**************************************************************************//**
+ * @brief SysTick_Handler
+ * Interrupt Service Routine for system tick counter
+ *****************************************************************************/
+void SysTick_Handler(void)
+{
+  msTicks++;       /* increment counter necessary in Delay()*/
+}
+
+/**************************************************************************//**
+ * @brief TIMER0_IRQHandler
+ * Interrupt Service Routine TIMER0 Interrupt Line
+ *****************************************************************************/
+void TIMER0_IRQHandler(void)
+{
+  /* Clear flag for TIMER0 overflow interrupt */
+  TIMER_IntClear(TIMER0, TIMER_IF_OF);
+
+  TIMER_CompareBufSet(TIMER0, 0, currentSpeed); //red 1 closer to mcu wire
+  TIMER_CompareBufSet(TIMER0, 1, currentSpeed);   //white 1 closer to mcu wire
+  TIMER_CompareBufSet(TIMER1, 0, currentSpeed);	//red 2
+  TIMER_CompareBufSet(TIMER1, 1, currentSpeed);	//white 2
+}
+
+/**************************************************************************//**
+ * @brief Setup GPIO interrupts for push buttons
+ *****************************************************************************/
+static void onBoardButtonSetup(void)
+{
+	/* Enable GPIO in CMU */
+	//CMU_ClockEnable(cmuClock_GPIO, true);
+
+	/* Configure PB9 and PB10 as input */
+	GPIO_PinModeSet(gpioPortB, 9, gpioModeInput, 0);
+	GPIO_PinModeSet(gpioPortB, 10, gpioModeInput, 0);
+
+	/* Set falling edge interrupt for both ports */
+	GPIO_IntConfig(gpioPortB, 9, false, true, true);
+	GPIO_IntConfig(gpioPortB, 10, false, true, true);
+
+	/* Enable interrupt in core for even and odd gpio interrupts */
+	NVIC_ClearPendingIRQ(GPIO_EVEN_IRQn);
+	NVIC_EnableIRQ(GPIO_EVEN_IRQn);
+
+	NVIC_ClearPendingIRQ(GPIO_ODD_IRQn);
+	NVIC_EnableIRQ(GPIO_ODD_IRQn);
+
+	return;
+}
+
+/**************************************************************************//**
+ * @brief  Main function
+ * Main is called from __iar_program_start, see assembly startup file
+ *****************************************************************************/
+int main(void)
+{
+    /* Initialize chip */
+    CHIP_Init();
+    if (SysTick_Config(CMU_ClockFreqGet(cmuClock_CORE) / 1000)) while (1) ;
+    BSP_Init(BSP_INIT_DEFAULT);
+    BSP_LedsInit();
+    /* Enable clock for GPIO module */
+    CMU_ClockEnable(cmuClock_GPIO, true);
+
+    /* Enable clock for TIMER0 module */
+    CMU_ClockEnable(cmuClock_HFPER, true);
+    CMU_ClockEnable(cmuClock_TIMER0, true);
+    CMU_ClockEnable(cmuClock_TIMER1, true);
+    CMU_ClockEnable(cmuClock_USART0, true);
+
+    /* Set CC0 location 3 pin (PD1) as output */
+    GPIO_PinModeSet(gpioPortD, 1, gpioModePushPull, 0);
+    GPIO_PinModeSet(gpioPortD, 2, gpioModePushPull, 0);
+    GPIO_PinModeSet(gpioPortD, 6, gpioModePushPull, 0);
+    GPIO_PinModeSet(gpioPortD, 7, gpioModePushPull, 0);
+    onBoardButtonSetup();
+
+    /* Initialize LCD controller without boost */
+    SegmentLCD_Init(false);
+    SegmentLCD_AllOff();
+
+    SegmentLCD_Write(" Hello ");//, EFM32 Zero Gecko world!\n");
+
+	/* Initialize UART and XBEE */
+	BSP_LedsSet(0x0001);
+	SegmentLCD_Number(3);
+	Setup_MPU6050();
+	SegmentLCD_AllOff();
+	SegmentLCD_Number(1);
+	MPU6050_Test_I2C();
+	SegmentLCD_AllOff();
+	SegmentLCD_Number(2);
+	if (MPU6050_Check_Registers()) { SegmentLCD_AllOff(); SegmentLCD_Number(4); }
+	else { SegmentLCD_AllOff(); SegmentLCD_Number(5);}
+	Calibrate_Gyros();
+	Calibrate_Acc();
+	XbeeSetup();
+	SegmentLCD_AllOff();
+	BSP_LedsSet(0x0002);
+	while(1)
+	{
+		PID* PID_X;
+		PID* PID_Y;
+		PID_X->proportional_gain = 0.5;
+		PID_X->derivative_gain = 0.5;
+		PID_X->integral_gain = 0.5;
+		PID_X->windup_guard = 2;
+		PID_Y->proportional_gain = 0.5;
+		PID_Y->derivative_gain = 0.5;
+		PID_Y->integral_gain = 0.5;
+		PID_Y->windup_guard = 2;
+
+		Get_Gyro_Rates();
+		Get_Accel_Values();
+
+		SegmentLCD_Write(" GYX ");
+		SegmentLCD_Number(GYRO_XOUT);
+		Delay(1000);
+		SegmentLCD_AllOff();
+		SegmentLCD_Write(" GYY ");
+		SegmentLCD_Number(GYRO_YOUT);
+		Delay(1000);
+		SegmentLCD_AllOff();
+		SegmentLCD_Write(" GYZ ");
+		SegmentLCD_Number(GYRO_ZOUT);
+		Delay(1000);
+		SegmentLCD_AllOff();
+
+		SegmentLCD_Write(" ACCX ");
+		SegmentLCD_Number(ACCEL_XOUT);
+		Delay(1000);
+		SegmentLCD_AllOff();
+		SegmentLCD_Write(" ACCY ");
+		SegmentLCD_Number(ACCEL_YOUT);
+		Delay(1000);
+		SegmentLCD_AllOff();
+		SegmentLCD_Write(" ACCZ ");
+		SegmentLCD_Number(ACCEL_ZOUT);
+		Delay(1000);
+		SegmentLCD_AllOff();
+
+		pid_update(PID_X, ACCEL_XOUT - ACCEL_XOUT_OFFSET, 1);
+		pid_update(PID_Y, ACCEL_YOUT - ACCEL_YOUT_OFFSET, 1);
+
+		SegmentLCD_Write(" PID_X ");
+		SegmentLCD_Number(PID_X->control);
+		Delay(1000);
+		SegmentLCD_AllOff();
+
+		SegmentLCD_Write(" PID_Y ");
+		SegmentLCD_Number(PID_Y->control);
+		Delay(1000);
+		SegmentLCD_AllOff();
+
+		if(pb0Pressed)
+		{
+		  BSP_LedsSet(0x000f);
+		  //printf("Starting QuadCopter!\n");
+		  pb0Pressed = false;
+		  /* Select CC channel parameters */
+		  TIMER_InitCC_TypeDef timerCCInit =
+		  {
+			.eventCtrl  = timerEventEveryEdge,
+			.edge       = timerEdgeBoth,
+			.prsSel     = timerPRSSELCh0,
+			.cufoa      = timerOutputActionNone,
+			.cofoa      = timerOutputActionNone,
+			.cmoa       = timerOutputActionNone,
+			.mode       = timerCCModePWM,
+			.filter     = false,
+			.prsInput   = false,
+			.coist      = false,
+			.outInvert  = false,
+		  };
+
+		  /* Configure CC channel 0 */
+		  TIMER_InitCC(TIMER0, 0, &timerCCInit);
+		  TIMER_InitCC(TIMER1, 0, &timerCCInit);
+		  timerCCInit.prsSel = timerPRSSELCh1;
+		  TIMER_InitCC(TIMER0, 1, &timerCCInit);
+		  TIMER_InitCC(TIMER1, 1, &timerCCInit);
+
+		  /* Route CC0 to location 3 (PD1) and enable pin */
+		  TIMER0->ROUTE |= (TIMER_ROUTE_CC0PEN | TIMER_ROUTE_LOCATION_LOC3);
+		  TIMER0->ROUTE |= (TIMER_ROUTE_CC1PEN | TIMER_ROUTE_LOCATION_LOC3);
+		  TIMER1->ROUTE |= (TIMER_ROUTE_CC0PEN | TIMER_ROUTE_LOCATION_LOC4);
+		  TIMER1->ROUTE |= (TIMER_ROUTE_CC1PEN | TIMER_ROUTE_LOCATION_LOC4);
+
+		  /* Set Top Value */
+		  TIMER_TopSet(TIMER0, CMU_ClockFreqGet(cmuClock_HFPER)/PWM_FREQ);
+		  TIMER_TopSet(TIMER1, CMU_ClockFreqGet(cmuClock_HFPER)/PWM_FREQ);
+
+		  /* Set compare value starting at 0 - it will be incremented in the interrupt handler */
+		  TIMER_CompareBufSet(TIMER0, 0, 14000);
+		  TIMER_CompareBufSet(TIMER0, 1, 14000);
+		  TIMER_CompareBufSet(TIMER1, 0, 14000);
+		  TIMER_CompareBufSet(TIMER1, 1, 14000);
+
+		  /* Select timer parameters */
+		  TIMER_Init_TypeDef timerInit =
+		  {
+			.enable     = true,
+			.debugRun   = true,
+			.prescale   = timerPrescale1,
+			.clkSel     = timerClkSelHFPerClk,
+			.fallAction = timerInputActionNone,
+			.riseAction = timerInputActionNone,
+			.mode       = timerModeUp,
+			.dmaClrAct  = false,
+			.quadModeX4 = false,
+			.oneShot    = false,
+			.sync       = false,
+		  };
+
+		  /* Enable overflow interrupt */
+		  TIMER_IntEnable(TIMER0, TIMER_IF_OF);
+
+		  /* Enable TIMER0 interrupt vector in NVIC */
+		  NVIC_EnableIRQ(TIMER0_IRQn);
+
+		  /* Configure timer */
+		  TIMER_Init(TIMER0, &timerInit);
+		  TIMER_Init(TIMER1, &timerInit);
+		  Delay(250);
+
+		  while(1)
+		  {
+			if(!pb1Pressed)
+			{
+				char checkDelimiter = uartGetChar();
+				if(checkDelimiter == 0x7E)
+				{
+					//BSP_LedsSet(0x0002);
+					char msg = 0;
+					int msgSize = 0;
+					int status = receiveRxFrame(&msg, 1, &msgSize);
+					if(status)
+					{
+						if(msg == 'u')
+						{
+							//BSP_LedsSet(0x000f);
+							if(currentSpeed + 700 <= 28000)
+							{
+								BSP_LedsSet(0x000f);
+								currentSpeed = currentSpeed + 700;
+							}
+						}
+						else if(msg == 'd')
+						{
+							//BSP_LedsSet(0x0001);
+							if(currentSpeed - 700 >= 14000)
+							{
+								BSP_LedsSet(0x0001);
+								currentSpeed = currentSpeed - 700;
+
+							}
+						}
+						else if(msg == 'l')
+						{
+							//BSP_LedsSet(0x0002);
+						}
+						else
+						{
+							//BSP_LedsSet(0x0000);
+						}
+					}
+				}
+			}
+			else
+			{
+				//printf("Stopped QuadCopter!\n");
+				pb1Pressed = false;
+				BSP_LedsSet(0x000f);
+				currentSpeed = 14000;
+				while(1);
+			}
+		  }
+		}
+	}
+
+}
+

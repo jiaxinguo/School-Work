@@ -186,14 +186,14 @@ Discarded input sections
                 0x00000000       0x38 ./emlib/em_system.o
  .rodata.str1.4
                 0x00000000       0x18 ./emlib/em_system.o
- .debug_info    0x00000000      0x28c ./emlib/em_system.o
+ .debug_info    0x00000000      0x29a ./emlib/em_system.o
  .debug_abbrev  0x00000000      0x10d ./emlib/em_system.o
  .debug_loc     0x00000000      0x110 ./emlib/em_system.o
  .debug_aranges
                 0x00000000       0x28 ./emlib/em_system.o
  .debug_ranges  0x00000000       0x18 ./emlib/em_system.o
- .debug_line    0x00000000      0x20d ./emlib/em_system.o
- .debug_str     0x00000000      0x241 ./emlib/em_system.o
+ .debug_line    0x00000000      0x232 ./emlib/em_system.o
+ .debug_str     0x00000000      0x248 ./emlib/em_system.o
  .comment       0x00000000       0x71 ./emlib/em_system.o
  .ARM.attributes
                 0x00000000       0x32 ./emlib/em_system.o
@@ -1164,26 +1164,26 @@ OUTPUT(EFM32ZG_spaceinvaders.axf elf32-littlearm)
  .debug_ranges  0x00000f58       0xa8 ./Drivers/udelay.o
  .debug_ranges  0x00001000      0x130 ./CMSIS/efm32zg/system_efm32zg.o
 
-.debug_line     0x00000000     0x4338
- .debug_line    0x00000000      0x2f0 ./src/capsense_spaceinvaders.o
- .debug_line    0x000002f0      0x5e8 ./src/game.o
- .debug_line    0x000008d8      0x2a4 ./src/main.o
- .debug_line    0x00000b7c      0x525 ./src/render.o
- .debug_line    0x000010a1      0x5ca ./src/spaceinvaders.o
- .debug_line    0x0000166b      0x318 ./emlib/em_acmp.o
- .debug_line    0x00001983       0x44 ./emlib/em_assert.o
- .debug_line    0x000019c7      0x875 ./emlib/em_cmu.o
- .debug_line    0x0000223c      0x32a ./emlib/em_emu.o
- .debug_line    0x00002566      0x294 ./emlib/em_gpio.o
- .debug_line    0x000027fa       0xce ./emlib/em_int.o
- .debug_line    0x000028c8      0x2a4 ./emlib/em_rtc.o
- .debug_line    0x00002b6c      0x64a ./emlib/em_usart.o
- .debug_line    0x000031b6      0x290 ./Drivers/display.o
- .debug_line    0x00003446      0x33d ./Drivers/displayls013b7dh03.o
- .debug_line    0x00003783      0x534 ./Drivers/displaypalemlib.o
- .debug_line    0x00003cb7      0x368 ./Drivers/udelay.o
- .debug_line    0x0000401f       0x85 ./CMSIS/efm32zg/startup_gcc_efm32zg.o
- .debug_line    0x000040a4      0x294 ./CMSIS/efm32zg/system_efm32zg.o
+.debug_line     0x00000000     0x44f4
+ .debug_line    0x00000000      0x315 ./src/capsense_spaceinvaders.o
+ .debug_line    0x00000315      0x5e8 ./src/game.o
+ .debug_line    0x000008fd      0x2c9 ./src/main.o
+ .debug_line    0x00000bc6      0x525 ./src/render.o
+ .debug_line    0x000010eb      0x5ef ./src/spaceinvaders.o
+ .debug_line    0x000016da      0x33d ./emlib/em_acmp.o
+ .debug_line    0x00001a17       0x44 ./emlib/em_assert.o
+ .debug_line    0x00001a5b      0x89a ./emlib/em_cmu.o
+ .debug_line    0x000022f5      0x34f ./emlib/em_emu.o
+ .debug_line    0x00002644      0x2b9 ./emlib/em_gpio.o
+ .debug_line    0x000028fd       0xce ./emlib/em_int.o
+ .debug_line    0x000029cb      0x2c9 ./emlib/em_rtc.o
+ .debug_line    0x00002c94      0x66f ./emlib/em_usart.o
+ .debug_line    0x00003303      0x290 ./Drivers/display.o
+ .debug_line    0x00003593      0x33d ./Drivers/displayls013b7dh03.o
+ .debug_line    0x000038d0      0x559 ./Drivers/displaypalemlib.o
+ .debug_line    0x00003e29      0x38d ./Drivers/udelay.o
+ .debug_line    0x000041b6       0x85 ./CMSIS/efm32zg/startup_gcc_efm32zg.o
+ .debug_line    0x0000423b      0x2b9 ./CMSIS/efm32zg/system_efm32zg.o
 
 .debug_str      0x00000000     0x2c09
  .debug_str     0x00000000      0x6ed ./src/capsense_spaceinvaders.o

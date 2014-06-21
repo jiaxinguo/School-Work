@@ -6,7 +6,7 @@
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="com.silabs.ide.project.core.cdtMbsProjectType">
-		<item value="com.silabs.ide.project.core.templates.model.com.silabs.sdk.si32.efm32.sls.2.0.1.EFM32GG_STK3700template.STK3700_inttemp.slsproj" key="selectedTemplateId"/>
+		<item value="com.silabs.ide.project.core.templates.model.com.silabs.sdk.si32.efm32.sls.2.0.1.EFM32WG_STK3800template.STK3800_blink.slsproj" key="selectedTemplateId"/>
 		<item value="LINK" key="importOption"/>
 		<item value="true" key="filterTemplatesByToolchain"/>
 		<item value="true" key="filterTemplatesByPartSdk"/>

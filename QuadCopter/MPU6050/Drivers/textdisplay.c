@@ -1,23 +1,17 @@
 /***************************************************************************//**
  * @file textdisplay.c
  * @brief Provide stdio retargeting to the text display interface.
- * @author Energy Micro AS
- * @version 3.20.2
+ * @version 3.20.5
  *******************************************************************************
  * @section License
  * <b>(C) Copyright 2014 Silicon Labs, http://www.silabs.com</b>
  *******************************************************************************
  *
- * This file is licensed under the Silicon Labs Software License Agreement. See 
- * "http://developer.silabs.com/legal/version/v11/Silicon_Labs_Software_License_Agreement.txt"  
- * for details. Before using this software for any purpose, you must agree to the 
- * terms of that agreement.
+ * This file is licensed under the Silabs License Agreement. See the file
+ * "Silabs_License_Agreement.txt" for details. Before using this software for
+ * any purpose, you must agree to the terms of that agreement.
  *
  ******************************************************************************/
-
-
-
-
 
 
 #include <stdint.h>
@@ -32,22 +26,21 @@
 #include "textdisplay.h"
 
 #ifdef TEXTDISPLAY_FONT_8x8
-#include "glib/glib_font.h"
+#include "displayfont8x8.h"
 #define FONT_ASCII_START  (' ')
 #define FONT_CHARACTERS   (100)
 #define FONT_BITS_MASK    (0x7)
 #define FONT_BITS_LOG2      (3)
-typedef uint8_t FontBits_t;
+#define fontBits chars_8x8_bits
 #endif
 
 #ifdef TEXTDISPLAY_FONT_6x8
-#include "glib/glib_font_6x8.h"
+#include "displayfont6x8.h"
 #define FONT_ASCII_START  (' ')
 #define FONT_CHARACTERS   (100)
 #define FONT_BITS_MASK    (0x7)
 #define FONT_BITS_LOG2      (3)
-#define fontBits fontBits_6x8
-typedef uint8_t FontBits_t;
+#define fontBits chars_6x8_bits
 #endif
 
 #ifdef TEXTDISPLAY_NUMBER_FONT_16x20

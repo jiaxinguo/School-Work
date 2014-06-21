@@ -115,7 +115,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x40 ./emlib/em_emu.o
  .debug_ranges  0x00000000       0x48 ./emlib/em_emu.o
- .debug_line    0x00000000      0x32a ./emlib/em_emu.o
+ .debug_line    0x00000000      0x34f ./emlib/em_emu.o
  .debug_str     0x00000000      0x370 ./emlib/em_emu.o
  .comment       0x00000000       0x71 ./emlib/em_emu.o
  .ARM.attributes
@@ -557,14 +557,14 @@ OUTPUT(EFM32ZG_blink.axf elf32-littlearm)
  .debug_ranges  0x000005f8      0x130 ./CMSIS/efm32zg/system_efm32zg.o
  .debug_ranges  0x00000728       0xa0 ./BSP/bsp_stk_leds.o
 
-.debug_line     0x00000000     0x13e1
- .debug_line    0x00000000      0x2a1 ./src/blink.o
- .debug_line    0x000002a1       0x44 ./emlib/em_assert.o
- .debug_line    0x000002e5      0x875 ./emlib/em_cmu.o
- .debug_line    0x00000b5a      0x294 ./emlib/em_gpio.o
- .debug_line    0x00000dee       0x85 ./CMSIS/efm32zg/startup_gcc_efm32zg.o
- .debug_line    0x00000e73      0x294 ./CMSIS/efm32zg/system_efm32zg.o
- .debug_line    0x00001107      0x2da ./BSP/bsp_stk_leds.o
+.debug_line     0x00000000     0x149a
+ .debug_line    0x00000000      0x2c6 ./src/blink.o
+ .debug_line    0x000002c6       0x44 ./emlib/em_assert.o
+ .debug_line    0x0000030a      0x89a ./emlib/em_cmu.o
+ .debug_line    0x00000ba4      0x2b9 ./emlib/em_gpio.o
+ .debug_line    0x00000e5d       0x85 ./CMSIS/efm32zg/startup_gcc_efm32zg.o
+ .debug_line    0x00000ee2      0x2b9 ./CMSIS/efm32zg/system_efm32zg.o
+ .debug_line    0x0000119b      0x2ff ./BSP/bsp_stk_leds.o
 
 .debug_str      0x00000000     0x10d3
  .debug_str     0x00000000      0x4bb ./src/blink.o

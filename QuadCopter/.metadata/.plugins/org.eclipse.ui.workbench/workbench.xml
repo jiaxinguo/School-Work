@@ -284,8 +284,8 @@
 <alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
 <alwaysOnActionSet id="com.silabs.ide.debug.attachActionSet"/>
 <alwaysOnActionSet id="org.eclipse.cdt.debug.edc.ui.snapshotDebuggingActionSet"/>
-<hide_menu_item_id id="org.eclipse.ui.file.print"/>
 <hide_menu_item_id id="org.eclipse.ui.file.closeAll"/>
+<hide_menu_item_id id="org.eclipse.ui.file.print"/>
 <hide_menu_item_id id="org.eclipse.ui.file.save"/>
 <hide_menu_item_id id="org.eclipse.jdt.ui.refactoring.menu"/>
 <hide_menu_item_id id="org.eclipse.ui.file.openWorkspace"/>
@@ -295,8 +295,8 @@
 <hide_menu_item_id id="org.eclipse.ui.edit.text.openLocalFile"/>
 <hide_menu_item_id id="com.silabs.ui.common.SilabsMenu"/>
 <hide_menu_item_id id="additions"/>
-<hide_menu_item_id id="org.eclipse.ui.file.refresh"/>
 <hide_menu_item_id id="org.eclipse.ui.file.restartWorkbench"/>
+<hide_menu_item_id id="org.eclipse.ui.file.refresh"/>
 <hide_menu_item_id id="org.eclipse.ui.help.quickStartAction"/>
 <hide_menu_item_id id="converstLineDelimitersTo"/>
 <hide_menu_item_id id="org.eclipse.equinox.p2.ui.sdk.update"/>
@@ -307,23 +307,23 @@
 <hide_menu_item_id id="reopenEditors"/>
 <hide_menu_item_id id="edit"/>
 <hide_menu_item_id id="navigate"/>
+<hide_menu_item_id id="org.eclipse.ui.file.export"/>
+<hide_menu_item_id id="org.eclipse.ui.file.import"/>
+<hide_menu_item_id id="org.eclipse.ui.file.saveAs"/>
 <hide_menu_item_id id="org.eclipse.ui.edit.move"/>
 <hide_menu_item_id id="org.eclipse.ui.file.revert"/>
-<hide_menu_item_id id="org.eclipse.ui.file.saveAs"/>
-<hide_menu_item_id id="org.eclipse.ui.file.import"/>
-<hide_menu_item_id id="org.eclipse.ui.file.export"/>
 <hide_menu_item_id id="org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction"/>
 <hide_menu_item_id id="project"/>
-<hide_menu_item_id id="org.eclipse.update.ui.updateMenu"/>
 <hide_menu_item_id id="new"/>
-<hide_menu_item_id id="org.eclipse.ui.window.showKeyAssist"/>
+<hide_menu_item_id id="org.eclipse.update.ui.updateMenu"/>
 <hide_menu_item_id id="window"/>
+<hide_menu_item_id id="org.eclipse.ui.window.showKeyAssist"/>
 <hide_menu_item_id id="org.eclipse.ui.help.tipsAndTricksAction"/>
 <hide_menu_item_id id="org.eclipse.jdt.ui.source.menu"/>
 <hide_menu_item_id id="org.eclipse.ui.run"/>
 <hide_menu_item_id id="org.eclipse.ui.help.dynamicHelp"/>
-<hide_toolbar_item_id id="org.eclipse.ui.workbench.navigate"/>
 <hide_toolbar_item_id id="org.eclipse.debug.ui.commands.RunToLine"/>
+<hide_toolbar_item_id id="org.eclipse.ui.workbench.navigate"/>
 <hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
 <view id="com.silabs.studio.launcher.ui.view"/>
 <fastViewBars/>
@@ -522,6 +522,24 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="UART.c" tooltip="QuadCopter_WG/src/UART.c">
+<persistable path="/QuadCopter_WG/src/UART.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="I2C.c" tooltip="QuadCopter_WG/src/I2C.c">
+<persistable path="/QuadCopter_WG/src/I2C.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="em_timer.c" tooltip="QuadCopter_WG/emlib/em_timer.c">
+<persistable path="/QuadCopter_WG/emlib/em_timer.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="UART.h" tooltip="QuadCopter_WG/src/UART.h">
+<persistable path="/QuadCopter_WG/src/UART.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="main.c" tooltip="QuadCopter_WG/src/main.c">
+<persistable path="/QuadCopter_WG/src/main.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="blink.c" tooltip="STK3800_blink/src/blink.c">
+<persistable path="/STK3800_blink/src/blink.c"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="PID.h" tooltip="Quadcopter_GG/src/PID.h">
 <persistable path="/Quadcopter_GG/src/PID.h"/>
 </file>
@@ -548,24 +566,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="UART.c" tooltip="Quadcopter_GG/src/UART.c">
 <persistable path="/Quadcopter_GG/src/UART.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="main.c" tooltip="Quadcopter_GG/src/main.c">
-<persistable path="/Quadcopter_GG/src/main.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="MPU6050.h" tooltip="MPU6050/src/MPU6050.h">
-<persistable path="/MPU6050/src/MPU6050.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="em_i2c.c" tooltip="Quadcopter_GG/emlib/em_i2c.c">
-<persistable path="/Quadcopter_GG/emlib/em_i2c.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="main.c" tooltip="MPU6050/src/main.c">
-<persistable path="/MPU6050/src/main.c"/>
-</file>
-<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="em_gpio.h" tooltip="C:\SiliconLabs\SimplicityStudio\v2\developer\sdks\efm32\v2\emlib\inc\em_gpio.h">
-<persistable uri="file:/C:/SiliconLabs/SimplicityStudio/v2/developer/sdks/efm32/v2/emlib/inc/em_gpio.h"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="inttemp.c" tooltip="EFM32GG_inttemp/src/inttemp.c">
-<persistable path="/EFM32GG_inttemp/src/inttemp.c"/>
 </file>
 </mruList>
 </workbench>
