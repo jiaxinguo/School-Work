@@ -420,15 +420,25 @@ void process_instruction(){
 	int SR1_MASK = 0x01C0;
 	int IMM5_MASK = 0x001F;
 	int PCOFFSET11_MASK = 0x07FF;
+	int BOFFSET6SEXT = 0xFFC0;
+	int PCOFFSET11SEXT = 0xF800;
+	int IMM5SEXT = 0xFFE0;
+	int BYTESEXT = 0xFF00;
+	int PCOFFSET9SEXT = 0xFE00;
 	int instruction = low16bits((MEMORY[CURRENT_LATCHES.PC][0] << 8) | MEMORY[CURRENT_LATCHES.PC][1]);
-	switch(instruction >> 12)
+	switch (instruction >> 12)
 	{
 	case 1:	//ADD
-		if (((instruction >> 5) % 2) == 1) //add error check and set CC
+		if (((instruction >> 5) % 2) == 1)
 		{
 			int DR = (instruction & DR_MASK) >> 9;
 			int SR1 = (instruction & SR1_MASK) >> 6;
-			NEXT_LATCHES.REGS[DR] = low16bits(CURRENT_LATCHES.REGS[SR1] + (instruction & IMM5_MASK));
+			int imm5 = instruction & IMM5_MASK;
+			if (imm5 >> 4)
+			{
+				imm5 = imm5 | IMM5SEXT;
+			}
+			NEXT_LATCHES.REGS[DR] = low16bits(CURRENT_LATCHES.REGS[SR1] + imm5);
 		}
 		else
 		{
@@ -437,28 +447,80 @@ void process_instruction(){
 			int SR2 = instruction & 0x7;
 			NEXT_LATCHES.REGS[DR] = low16bits(CURRENT_LATCHES.REGS[SR1] + CURRENT_LATCHES.REGS[SR2]);
 		}
+		if (NEXT_LATCHES.REGS[DR] >> 15)
+		{ 
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = TRUE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else if if ((NEXT_LATCHES.REGS[DR] >> 15 == 0) && (NEXT_LATCHES.REGS[DR] != 0))
+		{
+			NEXT_LATCHES.P = TRUE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = TRUE;
+		}
 		break;
-	case 2: //LDB	//add error check and set CC
+	case 2: //LDB
 		int DR = (instruction & DR_MASK) >> 9;
 		int baseR = (instruction & SR1_MASK) >> 6;
 		int boffset6 = instruction & 0x3F;
-		int addressToLoad = (CURRENT_LATCHES.REGS[baseR] + boffset6);
+		if (boffset6 >> 5)
+		{
+			boffset6 = boffset6 | BOFFSET6SEXT;
+		}
+		int addressToLoad = low16bits(CURRENT_LATCHES.REGS[baseR] + boffset6);
 		if (addressToStore % 2 == 1)
 		{
 			addressToStore = addressToStore >> 1;
-			NEXT_LATCHES.REGS[DR] = MEMORY[addressToLoad][1];
+			NEXT_LATCHES.REGS[DR] = low16bits(MEMORY[addressToLoad][1]);
+			if (NEXT_LATCHES.REGS[DR] >> 7)
+			{
+				NEXT_LATCHES.REGS[DR] = NEXT_LATCHES.REGS[DR] | BYTESEXT;
+			}
 		}
 		else
 		{
 			addressToStore = addressToStore >> 1;
-			NEXT_LATCHES.REGS[DR] = MEMORY[addressToLoad][0];
+			NEXT_LATCHES.REGS[DR] = low16bits(MEMORY[addressToLoad][0]);
+			if (NEXT_LATCHES.REGS[DR] >> 7)
+			{
+				NEXT_LATCHES.REGS[DR] = NEXT_LATCHES.REGS[DR] | BYTESEXT;
+			}
+		}
+		if (NEXT_LATCHES.REGS[DR] >> 15)
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = TRUE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else if ((NEXT_LATCHES.REGS[DR] >> 15 == 0) && (NEXT_LATCHES.REGS[DR] != 0))
+		{
+			NEXT_LATCHES.P = TRUE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = TRUE;
 		}
 		break;
-	case 3:	//STB	//add error check	//FIX THIS ADDRESS MAY BE ODD
+	case 3:	//STB
 		int SR = (instruction & DR_MASK) >> 9;
 		int toStore = CURRENT_LATCHES.REGS[SR] & 0xFF;
 		int baseR = (instruction & SR1_MASK) >> 6;
 		int boffset6 = instruction & 0x3F;
+		if (boffset6 >> 5)
+		{
+			boffset6 = boffset6 | BOFFSET6SEXT;
+		}
 		int addressToStore = low16bits(boffset6 + CURRENT_LATCHES.REGS[baseR]);
 		if (addressToStore % 2 == 1)
 		{
@@ -475,7 +537,12 @@ void process_instruction(){
 		NEXT_LATCHES.REGS[7] = CURRENT_LATCHES.PC;
 		if (((instruction >> 11) % 2) == 1) //add error check
 		{
-			int PCoffset11 = low16bits((instruction & PCOFFSET11_MASK) << 1);
+			int PCoffset11 = low16bits(instruction & PCOFFSET11_MASK);
+			if (PCoffset11 >> 10)
+			{
+				PCoffset11 = PCoffset11 | PCOFFSET11SEXT;
+			}
+			PCoffset11 = PCoffset11 << 1;
 			NEXT_LATCHES.PC = low16bits(CURRENT_LATCHES.PC + PCoffset11);
 		}
 		else
@@ -485,11 +552,16 @@ void process_instruction(){
 		}
 		break;
 	case 5: //AND
-		if (((instruction >> 5) % 2) == 1) //add error check and set CC
+		if (((instruction >> 5) % 2) == 1)
 		{
 			int DR = (instruction & DR_MASK) >> 9;
 			int SR1 = (instruction & SR1_MASK) >> 6;
-			NEXT_LATCHES.REGS[DR] = low16bits(CURRENT_LATCHES.REGS[SR1] & (instruction & IMM5_MASK));
+			int imm5 = instruction & IMM5_MASK;
+			if (imm5 >> 4)
+			{
+				imm5 = imm5 | IMM5SEXT;
+			}
+			NEXT_LATCHES.REGS[DR] = low16bits(CURRENT_LATCHES.REGS[SR1] & imm5);
 		}
 		else
 		{
@@ -498,27 +570,79 @@ void process_instruction(){
 			int SR2 = instruction & 0x7;
 			NEXT_LATCHES.REGS[DR] = low16bits(CURRENT_LATCHES.REGS[SR1] & CURRENT_LATCHES.REGS[SR2]);
 		}
+		if (NEXT_LATCHES.REGS[DR] >> 15)
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = TRUE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else if ((NEXT_LATCHES.REGS[DR] >> 15 == 0) && (NEXT_LATCHES.REGS[DR] != 0))
+		{
+			NEXT_LATCHES.P = TRUE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = TRUE;
+		}
 		break;
-	case 6:	//LDW //set CC
+	case 6:	//LDW
 		int DR = (instruction & DR_MASK) >> 9;
 		int baseR = (instruction & SR1_MASK) >> 6;
 		int offset6 = instruction & 0x3F;
-		NEXT_LATCHES.REGS[DR] = low16bits(MEMORY[((CURRENT_LATCHES.REGS[baseR] + (offset6 << 1))) >> 1][0] + MEMORY[((CURRENT_LATCHES.REGS[baseR] + (offset6 << 1))) >> 1][1]);
+		if (offset6 >> 5)
+		{
+			offset6 = offset6 | BOFFSET6SEXT;
+		}
+		int addressToLoad = low16bits(CURRENT_LATCHES.REGS[baseR] + (offset6 << 1));
+		NEXT_LATCHES.REGS[DR] = low16bits(MEMORY[addressToLoad >> 1][1]);
+		NEXT_LATCHES.REGS[DR] = NEXT_LATCHES.REGS[DR] << 8;
+		NEXT_LATCHES.REGS[DR] = NEXT_LATCHES.REGS[DR] | (low16bits(MEMORY[addressToLoad >> 1][0]));
+		if (NEXT_LATCHES.REGS[DR] >> 15)
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = TRUE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else if ((NEXT_LATCHES.REGS[DR] >> 15 == 0) && (NEXT_LATCHES.REGS[DR] != 0))
+		{
+			NEXT_LATCHES.P = TRUE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = TRUE;
+		}
 		break;
 	case 7:	//STW
 		int SR = (instruction & DR_MASK) >> 9;
 		int toStore = CURRENT_LATCHES.REGS[SR] & 0xFF;
 		int baseR = (instruction & SR1_MASK) >> 6;
-		int boffset6 = instruction & 0x3F;
-		int addressToStore = low16bits(boffset6 + CURRENT_LATCHES.REGS[baseR]) >> 1;
-		MEMORY[addressToStore][0] = toStore & 0x00FF;
-		MEMORY[addressToStore][1] = toStore & 0xFF00;
+		int	offset6 = instruction & 0x3F;
+		if (offset6 >> 5)
+		{
+			offset6 = offset6 | BOFFSET6SEXT;
+		}cacac
+		int addressToStore = low16bits((offset6 << 1) + CURRENT_LATCHES.REGS[baseR]);
+		if (addressToStore % 2 == 1)
+		{
+			MEMORY[addressToStore][1] = toStore & 0x00FF;
+		}
+		else
+		{
+			MEMORY[addressToStore][0] = toStore & 0x00FF;
+		}
 		break;
 	case 8:	//RTI
-
 		break;
-	case 9:	//XOR/NOT	//setcc
-		if (((instruction >> 5) % 2) == 1) //add error check and set CC
+	case 9:	//XOR/NOT
+		if (((instruction >> 5) % 2) == 1)
 		{
 			int DR = (instruction & DR_MASK) >> 9;
 			int SR1 = (instruction & SR1_MASK) >> 6;
@@ -531,12 +655,30 @@ void process_instruction(){
 			int SR2 = instruction & 0x7;
 			NEXT_LATCHES.REGS[DR] = low16bits(CURRENT_LATCHES.REGS[SR1] ^ CURRENT_LATCHES.REGS[SR2]);
 		}
+		if (NEXT_LATCHES.REGS[DR] >> 15)
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = TRUE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else if ((NEXT_LATCHES.REGS[DR] >> 15 == 0) && (NEXT_LATCHES.REGS[DR] != 0))
+		{
+			NEXT_LATCHES.P = TRUE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = TRUE;
+		}
 		break;
 	case 10:	//reserved
 		break;
 	case 11:	//reserved
 		break;
-	case 12:	//JMP/RET	//add error check
+	case 12:	//JMP/RET
 		int baseR = (instruction & SR1_MASK) >> 6;
 		NEXT_LATCHES.PC = CURRENT_LATCHES.REGS[baseR];
 		break;
@@ -545,7 +687,7 @@ void process_instruction(){
 		int SR = (instruction & SR1_MASK) >> 6;
 		int ammount4 = instruction & 0x000F;
 		int i;
-		if (((instruction >> 4) % 2) == 0) //add error check and set CC
+		if (((instruction >> 4) % 2) == 0)
 		{
 			NEXT_LATCHES.REGS[DR] = CURRENT_LATCHES.REGS[SR] << ammount4;
 		}
@@ -571,16 +713,40 @@ void process_instruction(){
 				}
 			}
 		}
+		if (NEXT_LATCHES.REGS[DR] >> 15)
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = TRUE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else if ((NEXT_LATCHES.REGS[DR] >> 15 == 0) && (NEXT_LATCHES.REGS[DR] != 0))
+		{
+			NEXT_LATCHES.P = TRUE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = FALSE;
+		}
+		else
+		{
+			NEXT_LATCHES.P = FALSE;
+			NEXT_LATCHES.N = FALSE;
+			NEXT_LATCHES.Z = TRUE;
+		}
 		break;
-	case 14:	//LEA	//set CC
+	case 14:	//LEA
 		int DR = (instruction & DR_MASK) >> 9;
 		int PCoffset9 = instruction & 0x01FF;
-		NEXT_LATCHES.REGS[DR] = CURRENT_LATCHES.PC + (PCoffset9 << 1);
+		if (PCoffset9 >> 8)
+		{
+			PCoffset9 = PCoffset9 | PCOFFSET9SEXT;
+		}
+		NEXT_LATCHES.REGS[DR] = low16bits(CURRENT_LATCHES.PC + (PCoffset9 << 1));
 		break;
 	case 15:	//TRAP
 		int trapvect8 = instruction & 0x00FF;
 		NEXT_LATCHES.REGS[7] = CURRENT_LATCHES.PC;
-		NEXT_LATCHES.PC = MEMORY[trapvect << 1][1] | MEMORY[trapvect << 1][0];
+		NEXT_LATCHES.PC = low16bits(MEMORY[trapvect << 1][1]);
+		NEXT_LATCHES.PC = NEXT_LATCHES.PC << 8;
+		NEXT_LATCHES.PC = NEXT_LATCHES.PC | (low16bits(MEMORY[trapvect << 1][0]));
 		break;
 	}
 }
