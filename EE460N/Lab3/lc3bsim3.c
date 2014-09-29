@@ -1,6 +1,6 @@
 /*
-    Name 1: Your full name
-    UTEID 1: Your UT EID
+    Name 1: Jiaxin Guo
+    UTEID 1: jg46989
 */
 
 /***************************************************************/
@@ -667,14 +667,19 @@ void cycle_memory() {
    * If fourth, we need to latch Ready bit at the end of 
    * cycle to prepare microsequencer for the fifth cycle.  
    */
-	currentMemoryCycle = (currentMemoryCycle + 1) % 5;
-	if (currentMemoryCycle == 3)
-	{
-		NEXT_LATCHES.READY = TRUE;
-	}
-	else if (currentMemoryCycle == 4)
-	{
-		NEXT_LATCHES.READY = FALSE;
+	if(GetMIO_EN(CURRENT_LATCHES.MICROINSTRUCTION) == 1)
+	{	
+		currentMemoryCycle = (currentMemoryCycle + 1) % 5;
+		if (currentMemoryCycle == 4)
+		{
+			printf("0\n");
+			NEXT_LATCHES.READY = TRUE;
+		}
+		else if (currentMemoryCycle == 0)
+		{
+			printf("1\n");
+			NEXT_LATCHES.READY = FALSE;
+		}
 	}
 }
 
