@@ -643,7 +643,7 @@ void eval_micro_sequencer() {
 			NEXT_LATCHES.STATE_NUMBER = nextState;
 			break;
 		case 3:
-			if (CURRENT_LATCHES.IR >= 2048)
+			if (((CURRENT_LATCHES.IR & 0x00000800) >> 11) == 1)
 			{
 				nextState += 1;
 			}
@@ -672,12 +672,12 @@ void cycle_memory() {
 		currentMemoryCycle = (currentMemoryCycle + 1) % 5;
 		if (currentMemoryCycle == 4)
 		{
-			printf("0\n");
+			/*printf("0\n");*/
 			NEXT_LATCHES.READY = TRUE;
 		}
 		else if (currentMemoryCycle == 0)
 		{
-			printf("1\n");
+			/*printf("1\n");*/
 			NEXT_LATCHES.READY = FALSE;
 		}
 	}
@@ -785,6 +785,10 @@ void eval_bus_drivers() {
 	else if (((CURRENT_LATCHES.IR & 0x00000020) >> 5) == 1)
 	{
 		ALUInputB = CURRENT_LATCHES.IR & 0x0000001F;
+		if(((ALUInputB & 0x00000010) >> 4) == 1)
+		{
+			ALUInputB = ALUInputB | 0x0000FFE0;
+		}
 	}
 	if (GetSR1MUX(CURRENT_LATCHES.MICROINSTRUCTION) == 0)
 	{
@@ -830,10 +834,10 @@ void eval_bus_drivers() {
 	}
 	else if (((CURRENT_LATCHES.IR & 0x00000030) >> 4) == 3)
 	{
-		if ((SHFOutput & 0x00008000 >> 15) == 1)
+		if (((SHFOutput & 0x00008000) >> 15) == 1)
 		{
 			int i;
-			for (i = 0; i < CURRENT_LATCHES.IR & 0x0000000F; i++)
+			for (i = 0; i < (CURRENT_LATCHES.IR & 0x0000000F); i++)
 			{
 				SHFOutput = Low16bits(SHFOutput >> 1);
 				SHFOutput = SHFOutput | 0x00008000;
@@ -854,7 +858,7 @@ void eval_bus_drivers() {
 	{
 		MDROutputByte = CURRENT_LATCHES.MDR & 0x000000FF;
 	}
-	if ((MDROutputByte & 0x00000080 >> 7) == 1)
+	if (((MDROutputByte & 0x00000080) >> 7) == 1)
 	{
 		MDROutputByte = MDROutputByte | 0x0000FF00;
 	}
@@ -1013,7 +1017,7 @@ void latch_datapath_values() {
 		}
 	}
 	
-	if (GetR_W(CURRENT_LATCHES.MICROINSTRUCTION) == 1 && CURRENT_LATCHES.READY == 1)
+	if ((GetR_W(CURRENT_LATCHES.MICROINSTRUCTION) == 1) && (CURRENT_LATCHES.READY == 1))
 	{
 		if (GetDATA_SIZE(CURRENT_LATCHES.MICROINSTRUCTION) == 0)
 		{
